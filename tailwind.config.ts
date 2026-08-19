@@ -9,24 +9,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-        'pet-green': '#22c55e',
-        'pet-orange': '#f97316',
-      },
-      keyframes: {
-        'slide-up': {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        background: '#FFFFFF',
+        surface: '#FFFFFF',
+        ink: '#0B7A4B',
+        muted: '#3C7A5A',
+        border: '#E4E7EC',
+        primary: {
+          DEFAULT: '#0B7A4B',
+          foreground: '#FFFFFF',
         },
-        'scale-in': {
-          '0%': { transform: 'scale(0.9)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
+        secondary: {
+          DEFAULT: '#F59E0B',
+          dark: '#D97706',
+          light: '#FBBF24',
+          foreground: '#FFFFFF',
         },
+        'soft-green': '#EAF7F0',
+        'soft-gold': '#FFF5DF',
+        success: '#22C55E',
+        // legacy aliases used in some components during migration
+        'pet-green': '#0B7A4B',
+        'pet-orange': '#F59E0B',
       },
-      animation: {
-        'slide-up': 'slide-up 0.3s ease-out',
-        'scale-in': 'scale-in 0.3s ease-out',
+      fontFamily: {
+        heading: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+        body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+      },
+      borderRadius: {
+        card: '14px',
+        chip: '12px',
+      },
+      boxShadow: {
+        card: '0 1px 2px rgba(23, 33, 43, 0.06)',
+        elevated: '0 4px 12px rgba(23, 33, 43, 0.08)',
       },
     },
   },

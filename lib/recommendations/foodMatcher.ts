@@ -1,4 +1,4 @@
-import { products } from '@/lib/data/products'
+import { getCatalogProducts } from '@/lib/catalog/productRepository'
 import type { FoodProfile, Pet, Product, ProductMatch } from '@/lib/types'
 import { buildFoodProfile } from '@/lib/recommendations/petProfile'
 
@@ -79,11 +79,15 @@ function scoreProduct(product: Product, profile: FoodProfile, breedId: string): 
   return { product, score: normalized, reasons }
 }
 
-export function matchFoodProductsForPet(pet: Pet, limit = 5): ProductMatch[] {
+export function matchFoodProductsForPet(
+  pet: Pet,
+  limit = 5,
+  catalog: Product[] = getCatalogProducts()
+): ProductMatch[] {
   const profile = buildFoodProfile(pet)
   if (!profile) return []
 
-  return products
+  return catalog
     .map((product) => scoreProduct(product, profile, pet.breedId))
     .filter((match): match is ProductMatch => match !== null)
     .sort((a, b) => b.score - a.score)

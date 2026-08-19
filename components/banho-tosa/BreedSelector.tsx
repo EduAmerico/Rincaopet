@@ -23,7 +23,7 @@ export function BreedSelector({ selectedBreedId, onSelect }: BreedSelectorProps)
               <div className="mb-3 flex h-20 items-center justify-center rounded-xl bg-gray-50">
                 <img src={breed.image} alt={breed.name} className="h-14 w-14 object-contain" />
               </div>
-              <h3 className="font-semibold text-gray-900">{breed.name}</h3>
+              <h3 className="font-semibold text-ink">{breed.name}</h3>
             </Card>
           </button>
         )

@@ -1,47 +1,67 @@
+'use client'
+
 import Link from 'next/link'
 import type { Product } from '@/lib/types'
 import { productCategories } from '@/lib/data/products'
-import {
-  formatProductPriceLabel,
-  isWeightProduct,
-} from '@/lib/products/display'
+import { isWeightProduct } from '@/lib/products/display'
+import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { ProductPrice } from '@/components/catalogo/ProductPrice'
 
 interface ProductCardProps {
   product: Product
+  recommendedForPet?: string
 }
 
 const categoryLabels = Object.fromEntries(
   productCategories.map((c) => [c.value, c.label])
 )
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, recommendedForPet }: ProductCardProps) {
   return (
-    <Link href={`/catalogo/${product.id}`}>
-      <Card className="flex h-full flex-col transition hover:border-pet-green hover:shadow-md">
-        <div className="mb-4 flex h-32 items-center justify-center rounded-xl bg-gray-50">
+    <Card padding="sm" className="flex h-full flex-col overflow-hidden p-0">
+      <Link href={`/catalogo/${product.id}`} className="flex h-full flex-col">
+        <div className="relative aspect-square bg-background">
           <img
             src={product.image}
             alt={product.name}
-            className="h-20 w-20 object-contain"
+            className="h-full w-full object-contain p-4"
           />
-        </div>
-        <div className="mb-2 flex flex-wrap gap-2">
-          <span className="inline-flex rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-pet-green">
-            {categoryLabels[product.category]}
-          </span>
-          {isWeightProduct(product) && (
-            <span className="inline-flex rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-pet-orange">
-              A granel
-            </span>
+          <div className="absolute left-2 top-2 flex flex-wrap gap-1">
+            <Badge variant="outline">{categoryLabels[product.category]}</Badge>
+            {isWeightProduct(product) && (
+              <Badge variant="secondary">A granel</Badge>
+            )}
+            {product.promoPercent && product.promoPercent > 0 && (
+              <Badge variant="secondary">-{product.promoPercent}%</Badge>
+            )}
+          </div>
+          {recommendedForPet && (
+            <div className="absolute bottom-2 left-2 right-2">
+              <Badge variant="primary" className="max-w-full truncate">
+                Para {recommendedForPet}
+              </Badge>
+            </div>
           )}
         </div>
-        <h3 className="font-semibold text-gray-900">{product.name}</h3>
-        <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
-        <p className="mt-auto pt-4 text-lg font-bold text-pet-orange">
-          {formatProductPriceLabel(product)}
-        </p>
-      </Card>
-    </Link>
+        <div className="flex flex-1 flex-col p-3 pt-2">
+          <h3 className="line-clamp-2 font-heading text-sm font-semibold text-ink">
+            {product.name}
+          </h3>
+          <p className="mt-0.5 text-xs text-muted">{product.brand}</p>
+          <div className="mt-2">
+            <ProductPrice product={product} size="sm" />
+          </div>
+        </div>
+      </Link>
+      <div className="px-3 pb-3">
+        <Link href={`/catalogo/${product.id}`}>
+          <Button size="sm" className="w-full">
+            Ver produto
+          </Button>
+        </Link>
+      </div>
+    </Card>
   )
 }

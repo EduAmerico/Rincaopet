@@ -22,6 +22,9 @@ export type BaseProduct = {
   brand: string
   category: ProductCategory
   image: string
+  description?: string
+  promoPercent?: number
+  active?: boolean
   recommendedSizes?: PetSize[]
   recommendedLifeStages?: LifeStage[]
   forNeutered?: boolean
@@ -69,8 +72,7 @@ export type Pet = {
   profileCompleted: boolean
   firstAppointmentBooked: boolean
   firstBathCompleted: boolean
-  xp: number
-  level: number
+  coins: number
   createdAt: string
 }
 
@@ -114,7 +116,7 @@ export type Appointment = {
   scheduledDate: string
   scheduledTime: string
   totalPrice: number
-  xpEarned: number
+  coinsEarned: number
   createdAt: string
 }
 

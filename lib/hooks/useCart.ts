@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { getProductById } from '@/lib/data/products'
+import { getManagedProductById, ensureProductCatalogLoaded } from '@/lib/catalog/productRepository'
 import { calculateLineTotal, getUnitPriceForQuantity } from '@/lib/cart/pricing'
 import type { Cart, CartItem } from '@/lib/types'
 
@@ -30,6 +30,7 @@ export function useCart() {
   const [hasWhatsAppOrder, setHasWhatsAppOrder] = useState(false)
 
   useEffect(() => {
+    ensureProductCatalogLoaded()
     setCart(readStorage(CART_KEY, emptyCart))
     setHasWhatsAppOrder(readStorage<boolean>(WHATSAPP_ORDERS_KEY, false))
     setLoaded(true)
@@ -42,7 +43,7 @@ export function useCart() {
 
   const addItem = useCallback(
     (productId: string, quantity: number) => {
-      const product = getProductById(productId)
+      const product = getManagedProductById(productId)
       if (!product) return
 
       const unitPrice = getUnitPriceForQuantity(product, quantity)
@@ -96,7 +97,7 @@ export function useCart() {
 
   const total = useMemo(() => {
     return cart.items.reduce((sum, item) => {
-      const product = getProductById(item.productId)
+      const product = getManagedProductById(item.productId)
       if (!product) return sum
       return sum + calculateLineTotal(product, item.quantity)
     }, 0)

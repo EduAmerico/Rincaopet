@@ -3,14 +3,18 @@ import { HTMLAttributes } from 'react'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   selected?: boolean
+  padding?: 'sm' | 'md'
 }
 
-export function Card({ className, selected, ...props }: CardProps) {
+export function Card({ className, selected, padding = 'md', ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-2xl border bg-white p-5 shadow-sm transition-all',
-        selected ? 'border-pet-green ring-2 ring-pet-green/30' : 'border-gray-200 hover:border-gray-300',
+        'rounded-card border bg-surface shadow-card transition-all',
+        padding === 'md' ? 'p-4 md:p-5' : 'p-3',
+        selected
+          ? 'border-primary ring-2 ring-primary/20'
+          : 'border-border hover:border-primary/20',
         className
       )}
       {...props}

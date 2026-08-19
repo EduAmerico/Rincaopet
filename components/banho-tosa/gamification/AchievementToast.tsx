@@ -31,8 +31,8 @@ export function AchievementToast({ achievements, onClose }: AchievementToastProp
               <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
                 Conquista desbloqueada!
               </p>
-              <p className="font-bold text-gray-900">{achievement.title}</p>
-              <p className="text-sm text-gray-600">{achievement.description}</p>
+              <p className="font-bold text-ink">{achievement.title}</p>
+              <p className="text-sm text-muted">{achievement.description}</p>
             </div>
           </div>
         </Card>

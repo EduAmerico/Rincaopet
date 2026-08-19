@@ -4,6 +4,7 @@ import type { PetHealthInfo } from '@/lib/data/healthQuestions'
 import { healthQuestions } from '@/lib/data/healthQuestions'
 import { Card } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 
 interface PetHealthFormProps {
   health: PetHealthInfo
@@ -18,8 +19,8 @@ export function PetHealthForm({ health, onChange }: PetHealthFormProps) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Informações de saúde</h2>
-        <p className="mt-1 text-sm text-gray-500">
+        <h2 className="text-xl font-bold text-ink">Informações de saúde</h2>
+        <p className="mt-1 text-sm text-muted">
           Essas informações ajudam os profissionais a cuidar do seu pet com segurança.
           Não substituem avaliação veterinária.
         </p>
@@ -29,32 +30,26 @@ export function PetHealthForm({ health, onChange }: PetHealthFormProps) {
         <Card key={question.key} className="space-y-3">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="font-semibold text-gray-900">{question.label}</p>
-              <p className="mt-1 text-sm text-gray-600">{question.description}</p>
+              <p className="font-semibold text-ink">{question.label}</p>
+              <p className="mt-1 text-sm text-muted">{question.description}</p>
             </div>
             <div className="flex shrink-0 gap-2">
-              <button
+              <Button
                 type="button"
+                size="sm"
+                selected={Boolean(health[question.key])}
                 onClick={() => toggleField(question.key, true)}
-                className={`rounded-lg px-3 py-1.5 text-sm font-medium ${
-                  health[question.key]
-                    ? 'bg-pet-green text-white'
-                    : 'bg-gray-100 text-gray-600'
-                }`}
               >
                 Sim
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                size="sm"
+                selected={!health[question.key]}
                 onClick={() => toggleField(question.key, false)}
-                className={`rounded-lg px-3 py-1.5 text-sm font-medium ${
-                  !health[question.key]
-                    ? 'bg-gray-700 text-white'
-                    : 'bg-gray-100 text-gray-600'
-                }`}
               >
                 Não
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -71,7 +66,7 @@ export function PetHealthForm({ health, onChange }: PetHealthFormProps) {
       ))}
 
       <Card>
-        <label className="mb-2 block text-sm font-medium text-gray-700">
+        <label className="mb-2 block text-sm font-medium text-ink">
           Observações adicionais para a equipe
         </label>
         <textarea

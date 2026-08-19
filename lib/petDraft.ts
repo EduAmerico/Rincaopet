@@ -12,7 +12,6 @@ export function isDraftComplete(draft: PetRegistrationDraft): boolean {
       draft.weightKg > 0 &&
       draft.sex &&
       draft.neutered !== undefined &&
-      draft.bodyCondition &&
       draft.health &&
       (!needsCoat || draft.coatType)
   )

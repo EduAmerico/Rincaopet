@@ -15,7 +15,7 @@ interface PetSelectorProps {
 export function PetSelector({ pets, selectedPetIds, onToggle }: PetSelectorProps) {
   if (pets.length === 0) {
     return (
-      <Card className="text-center text-gray-600">
+      <Card className="text-center text-muted">
         Nenhum pet cadastrado. Cadastre um cachorro primeiro.
       </Card>
     )
@@ -35,12 +35,12 @@ export function PetSelector({ pets, selectedPetIds, onToggle }: PetSelectorProps
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-semibold text-gray-900">{pet.name}</h3>
-                  <p className="text-sm text-gray-500">
+                  <h3 className="font-semibold text-ink">{pet.name}</h3>
+                  <p className="text-sm text-muted">
                     {pet.weightKg ?? '—'} kg · {formatPetAge(pet)}
                   </p>
                   {breed && (
-                    <p className="mt-1 text-xs text-gray-500">{breed.name}</p>
+                    <p className="mt-1 text-xs text-muted">{breed.name}</p>
                   )}
                 </div>
                 <input

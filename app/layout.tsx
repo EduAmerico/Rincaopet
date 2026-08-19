@@ -1,16 +1,22 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import { Inter, Manrope } from 'next/font/google'
 import './globals.css'
-import { MainNav } from '@/components/layout/MainNav'
+import { AppShell } from '@/components/layout/AppShell'
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Agropet Goldpet — Catálogo & Banho e Tosa',
+  title: 'RincãoPet — Catálogo & Banho e Tosa',
   description: 'Catálogo de produtos e agendamento de banho e tosa para pets.',
 }
 
@@ -21,11 +27,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${geistSans.variable} antialiased`}>
-        <MainNav />
-        <main className="mx-auto min-h-[calc(100vh-80px)] max-w-6xl px-4 py-8">
-          {children}
-        </main>
+      <body className={`${manrope.variable} ${inter.variable} font-body antialiased`}>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   )

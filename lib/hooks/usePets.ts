@@ -8,15 +8,13 @@ import { evaluateAchievements } from '@/lib/gamification/achievements'
 
 import {
 
-  calculateAppointmentXp,
+  calculateAppointmentCoins,
 
-  calculateLevel,
+  calculateNewPetCoins,
 
-  calculateNewPetXp,
+  calculatePurchaseCoins,
 
-  calculatePurchaseXp,
-
-} from '@/lib/gamification/xpCalculator'
+} from '@/lib/gamification/coins'
 
 import { getBreedById } from '@/lib/data/breeds'
 
@@ -131,6 +129,10 @@ export function usePets() {
         scheduledDate: (a as Appointment).scheduledDate ?? '',
 
         scheduledTime: (a as Appointment).scheduledTime ?? '',
+        coinsEarned:
+          'coinsEarned' in a
+            ? (a as Appointment).coinsEarned
+            : (a as { xpEarned?: number }).xpEarned ?? 0,
 
       }))
 
@@ -182,7 +184,7 @@ export function usePets() {
 
 
 
-      const xp = calculateNewPetXp()
+      const coins = calculateNewPetCoins()
 
       const pet: Pet = {
 
@@ -218,9 +220,7 @@ export function usePets() {
 
         firstBathCompleted: false,
 
-        xp,
-
-        level: calculateLevel(xp),
+        coins,
 
         createdAt: new Date().toISOString(),
 
@@ -240,7 +240,7 @@ export function usePets() {
 
 
 
-      return { pet, xp, newAchievements: nextAchievements.filter((a) => !achievements.includes(a)) }
+      return { pet, coins, newAchievements: nextAchievements.filter((a) => !achievements.includes(a)) }
 
     },
 
@@ -348,7 +348,7 @@ export function usePets() {
 
     }) => {
 
-      const xpEarned = calculateAppointmentXp()
+      const coinsEarned = calculateAppointmentCoins()
 
       const appointment: Appointment = {
 
@@ -366,7 +366,7 @@ export function usePets() {
 
         totalPrice: input.totalPrice,
 
-        xpEarned,
+        coinsEarned,
 
         createdAt: new Date().toISOString(),
 
@@ -378,15 +378,13 @@ export function usePets() {
 
         if (pet.id !== input.petId) return pet
 
-        const newXp = pet.xp + xpEarned
+        const newCoins = pet.coins + coinsEarned
 
         return {
 
           ...pet,
 
-          xp: newXp,
-
-          level: calculateLevel(newXp),
+          coins: newCoins,
 
           firstAppointmentBooked: true,
 
@@ -414,7 +412,7 @@ export function usePets() {
 
         appointment,
 
-        xpEarned,
+        coinsEarned,
 
         newAchievements: nextAchievements.filter((a) => !achievements.includes(a)),
 
@@ -428,7 +426,7 @@ export function usePets() {
 
 
 
-  const awardPurchaseXp = useCallback(
+  const awardPurchaseCoins = useCallback(
 
     (petId?: string) => {
 
@@ -438,15 +436,15 @@ export function usePets() {
 
 
 
-      const xpEarned = calculatePurchaseXp()
+      const coinsEarned = calculatePurchaseCoins()
 
       const nextPets = pets.map((pet) => {
 
         if (pet.id !== targetId) return pet
 
-        const newXp = pet.xp + xpEarned
+        const newCoins = pet.coins + coinsEarned
 
-        return { ...pet, xp: newXp, level: calculateLevel(newXp) }
+        return { ...pet, coins: newCoins }
 
       })
 
@@ -456,7 +454,7 @@ export function usePets() {
 
       writeStorage(PETS_KEY, nextPets)
 
-      return xpEarned
+      return coinsEarned
 
     },
 
@@ -492,7 +490,7 @@ export function usePets() {
 
     createAppointment,
 
-    awardPurchaseXp,
+    awardPurchaseCoins,
 
     setActivePet,
 

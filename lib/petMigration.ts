@@ -22,6 +22,7 @@ type LegacyPet = {
   firstAppointmentBooked?: boolean
   firstBathCompleted?: boolean
   xp?: number
+  coins?: number
   level?: number
   createdAt?: string
 }
@@ -49,8 +50,7 @@ function isProfileComplete(pet: Partial<Pet>): boolean {
       pet.weightKg &&
       pet.weightKg > 0 &&
       pet.sex &&
-      pet.neutered !== undefined &&
-      pet.bodyCondition
+      pet.neutered !== undefined
   )
 }
 
@@ -77,8 +77,7 @@ function buildMigratedPet(legacy: LegacyPet, overrides: Partial<Pet>): Pet {
       isProfileComplete({ ...legacy, bodyCondition } as Pet),
     firstAppointmentBooked: legacy.firstAppointmentBooked ?? false,
     firstBathCompleted: legacy.firstBathCompleted ?? false,
-    xp: legacy.xp ?? 0,
-    level: legacy.level ?? 1,
+    coins: legacy.coins ?? legacy.xp ?? 0,
     createdAt: legacy.createdAt ?? new Date().toISOString(),
   }
 }
@@ -120,8 +119,7 @@ export function migratePet(raw: unknown): Pet {
     profileCompleted: false,
     firstAppointmentBooked: false,
     firstBathCompleted: false,
-    xp: legacy.xp ?? 0,
-    level: legacy.level ?? 1,
+    coins: legacy.coins ?? legacy.xp ?? 0,
     createdAt: legacy.createdAt ?? new Date().toISOString(),
   }
 }

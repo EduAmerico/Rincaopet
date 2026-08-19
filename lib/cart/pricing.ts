@@ -1,14 +1,20 @@
 import type { Product, WeightProduct } from '@/lib/types'
-import { getDefaultWeightGrams, isUnitProduct, isWeightProduct } from '@/lib/products/display'
+import {
+  getDefaultWeightGrams,
+  getEffectivePricePerKg,
+  getEffectiveUnitPrice,
+  isUnitProduct,
+  isWeightProduct,
+} from '@/lib/products/display'
 
 export function calculateWeightPrice(product: WeightProduct, grams: number): number {
   const clamped = Math.max(grams, product.minimumWeightGrams)
-  return (clamped / 1000) * product.pricePerKg
+  return (clamped / 1000) * getEffectivePricePerKg(product)
 }
 
 export function calculateLineTotal(product: Product, quantity: number): number {
   if (isUnitProduct(product)) {
-    return product.price * quantity
+    return getEffectiveUnitPrice(product) * quantity
   }
   if (isWeightProduct(product)) {
     return calculateWeightPrice(product, quantity)
@@ -17,7 +23,7 @@ export function calculateLineTotal(product: Product, quantity: number): number {
 }
 
 export function getUnitPriceForQuantity(product: Product, quantity: number): number {
-  if (isUnitProduct(product)) return product.price
+  if (isUnitProduct(product)) return getEffectiveUnitPrice(product)
   if (isWeightProduct(product)) return calculateWeightPrice(product, quantity)
   return 0
 }

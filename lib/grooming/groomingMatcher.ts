@@ -4,13 +4,18 @@ import { getBreedGroomingProfile } from '@/lib/grooming/breedGroomingProfiles'
 import { getSrdProfileByCoatType } from '@/lib/grooming/coatTypes'
 import type { GroomingOption } from '@/lib/types'
 
+function isDuplicateBathOption(option: GroomingOption): boolean {
+  return option.id === 'bath-only' || /^banho\b/i.test(option.name)
+}
+
 function splitOptions(options: GroomingOption[]): {
   recommended: GroomingOption[]
   other: GroomingOption[]
 } {
+  const extras = options.filter((o) => !isDuplicateBathOption(o))
   return {
-    recommended: options.filter((o) => o.recommended),
-    other: options.filter((o) => !o.recommended),
+    recommended: extras.filter((o) => o.recommended),
+    other: extras.filter((o) => !o.recommended),
   }
 }
 

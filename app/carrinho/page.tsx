@@ -12,20 +12,20 @@ export default function CarrinhoPage() {
   const { cart, loaded, removeItem } = useCart()
 
   if (!loaded) {
-    return <p className="text-gray-600">Carregando carrinho...</p>
+    return <p className="text-muted">Carregando carrinho...</p>
   }
 
   return (
     <div>
       <PageHeader
         title="Carrinho"
-        description="Revise seus itens e finalize o pedido pelo WhatsApp."
+        description="Revise seus itens e finalize pelo WhatsApp."
       />
 
       {cart.items.length === 0 ? (
         <Card className="text-center">
-          <p className="text-lg font-semibold text-gray-700">Seu carrinho está vazio</p>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="font-heading text-lg font-semibold text-ink">Seu carrinho está vazio</p>
+          <p className="mt-2 text-sm text-muted">
             Explore o catálogo e adicione produtos unitários ou a granel.
           </p>
           <Link href="/catalogo" className="mt-6 inline-block">
@@ -33,7 +33,7 @@ export default function CarrinhoPage() {
           </Link>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px] lg:gap-8">
           <div className="space-y-3">
             {cart.items.map((item) => (
               <CartItemRow

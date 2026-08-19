@@ -30,8 +30,7 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ], { avoidShaving: true, shavingWarning: SHAVING_WARNING }),
 
   profile('b5', 'Pelagem curta densa', [
-    g.bathOnly,
-    { ...g.bathBrush, name: 'Escovação' },
+    g.bathBrush,
     g.deshedding,
     g.sanitary,
     g.nails,
@@ -39,7 +38,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ]),
 
   profile('b10', 'Pelagem curta', [
-    g.bathOnly,
     g.skinCare,
     g.sanitary,
     g.nails,
@@ -114,7 +112,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ]),
 
   profile('b17', 'Pelagem dupla espessa', [
-    g.bathOnly,
     g.deshedding,
     g.sanitary,
     g.pawTrim,
@@ -123,7 +120,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ], { avoidShaving: true, shavingWarning: SHAVING_WARNING }),
 
   profile('b8', 'Pelagem dupla', [
-    g.bathOnly,
     g.deshedding,
     g.deepBrush,
     g.sanitary,
@@ -131,7 +127,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ], { avoidShaving: true, shavingWarning: SHAVING_WARNING }),
 
   profile('b9', 'Pelagem dupla média', [
-    g.bathOnly,
     g.bathBrush,
     g.deshedding,
     g.sanitary,
@@ -140,7 +135,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ], { avoidShaving: true, shavingWarning: SHAVING_WARNING }),
 
   profile('b7', 'Pelagem dupla', [
-    g.bathOnly,
     g.bathBrush,
     g.deshedding,
     g.sanitary,
@@ -149,7 +143,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ], { avoidShaving: true, shavingWarning: SHAVING_WARNING }),
 
   profile('b12', 'Pelagem espessa', [
-    g.bathOnly,
     g.deepBrush,
     g.deshedding,
     g.sanitary,
@@ -158,7 +151,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ], { avoidShaving: true, shavingWarning: SHAVING_WARNING }),
 
   profile('b4', 'Pelagem curta', [
-    g.bathOnly,
     g.bathBrush,
     g.sanitary,
     g.nails,
@@ -167,7 +159,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ]),
 
   profile('b18', 'Pelagem curta', [
-    g.bathOnly,
     g.bathBrush,
     g.deshedding,
     g.sanitary,
@@ -176,7 +167,6 @@ export const breedGroomingProfiles: BreedGroomingProfile[] = [
   ]),
 
   profile('b19', 'Pelagem curta', [
-    g.bathOnly,
     g.bathBrush,
     g.sanitary,
     g.nails,

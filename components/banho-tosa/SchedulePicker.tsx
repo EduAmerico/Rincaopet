@@ -1,6 +1,7 @@
 'use client'
 
 import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 
 const timeSlots = ['09:00', '10:30', '14:00', '15:30', '17:00']
 
@@ -22,7 +23,7 @@ export function SchedulePicker({
   return (
     <Card className="space-y-4">
       <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">Data</label>
+        <label className="mb-2 block text-sm font-medium text-ink">Data</label>
         <input
           type="date"
           min={today}
@@ -32,21 +33,17 @@ export function SchedulePicker({
         />
       </div>
       <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">Horário</label>
+        <label className="mb-2 block text-sm font-medium text-ink">Horário</label>
         <div className="flex flex-wrap gap-2">
           {timeSlots.map((slot) => (
-            <button
+            <Button
               key={slot}
               type="button"
+              selected={scheduledTime === slot}
               onClick={() => onTimeChange(slot)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                scheduledTime === slot
-                  ? 'bg-pet-green text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
             >
               {slot}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

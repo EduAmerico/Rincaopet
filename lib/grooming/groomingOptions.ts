@@ -17,10 +17,10 @@ function opt(
 
 const bathBrush = opt(
   'bath-brush',
-  'Banho + escovação',
-  'Banho completo com escovação durante o processo.',
+  'Escovação',
+  'Escovação completa da pelagem durante o atendimento.',
   'coat-care',
-  65,
+  35,
   true
 )
 const bathOnly = opt('bath-only', 'Banho', 'Banho completo com secagem.', 'coat-care', 60, true)

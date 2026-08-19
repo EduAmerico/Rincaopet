@@ -28,12 +28,12 @@ export function CatalogFiltersPanel({
   return (
     <Card className="h-fit space-y-6">
       <div>
-        <h2 className="font-bold text-gray-900">Filtros</h2>
-        <p className="text-sm text-gray-500">{resultCount} produto(s) encontrado(s)</p>
+        <h2 className="font-bold text-ink">Filtros</h2>
+        <p className="text-sm text-muted">{resultCount} produto(s) encontrado(s)</p>
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">Buscar</label>
+        <label className="mb-2 block text-sm font-medium text-ink">Buscar</label>
         <Input
           placeholder="Nome do produto..."
           value={filters.search}
@@ -42,7 +42,7 @@ export function CatalogFiltersPanel({
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium text-gray-700">Marca</p>
+        <p className="mb-2 text-sm font-medium text-ink">Marca</p>
         <div className="space-y-2">
           {productBrands.map((brand) => (
             <label key={brand} className="flex cursor-pointer items-center gap-2 text-sm">
@@ -59,7 +59,7 @@ export function CatalogFiltersPanel({
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium text-gray-700">Categoria</p>
+        <p className="mb-2 text-sm font-medium text-ink">Categoria</p>
         <div className="space-y-2">
           {productCategories.map((category) => (
             <label key={category.value} className="flex cursor-pointer items-center gap-2 text-sm">
@@ -76,7 +76,7 @@ export function CatalogFiltersPanel({
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium text-gray-700">
+        <p className="mb-2 text-sm font-medium text-ink">
           Preço: R$ {filters.minPrice.toFixed(0)} — R$ {filters.maxPrice.toFixed(0)}
         </p>
         <input
@@ -86,7 +86,7 @@ export function CatalogFiltersPanel({
           step={10}
           value={filters.maxPrice}
           onChange={(e) => onPriceRange(filters.minPrice, Number(e.target.value))}
-          className="w-full accent-pet-green"
+          className="w-full accent-secondary"
         />
       </div>
 

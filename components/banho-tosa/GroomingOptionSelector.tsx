@@ -35,11 +35,11 @@ function OptionCard({
       >
         <div className="flex items-start justify-between gap-2">
           <div>
-            <h4 className="font-semibold text-gray-900">
+            <h4 className="font-semibold text-ink">
               {highlight && '★ '}
               {option.name}
             </h4>
-            <p className="mt-1 text-sm text-gray-500">{option.description}</p>
+            <p className="mt-1 text-sm text-muted">{option.description}</p>
             {option.warning && (
               <p className="mt-2 text-xs text-amber-700">{option.warning}</p>
             )}
@@ -66,7 +66,7 @@ export function GroomingOptionSelector({
 
   if (!match) {
     return (
-      <Card className="text-gray-600">
+      <Card className="text-muted">
         {pet.breedId === 'b1'
           ? 'Selecione o tipo de pelagem no cadastro do pet para ver os serviços disponíveis.'
           : 'Perfil de grooming não encontrado para esta raça.'}
@@ -84,7 +84,7 @@ export function GroomingOptionSelector({
 
       {match.recommended.length > 0 && (
         <section>
-          <h3 className="mb-3 font-semibold text-gray-900">
+          <h3 className="mb-3 font-semibold text-ink">
             Para {pet.name} recomendamos:
           </h3>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -103,7 +103,7 @@ export function GroomingOptionSelector({
 
       {match.other.length > 0 && (
         <section>
-          <h3 className="mb-3 font-semibold text-gray-700">Outras opções:</h3>
+          <h3 className="mb-3 font-semibold text-ink">Outras opções:</h3>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {match.other.map((option) => (
               <OptionCard

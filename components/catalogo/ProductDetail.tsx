@@ -1,24 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingCart } from 'lucide-react'
 import type { Product } from '@/lib/types'
 import {
-  formatProductPriceLabel,
   isUnitProduct,
   isWeightProduct,
 } from '@/lib/products/display'
-import {
-  calculateLineTotal,
-  getInitialQuantity,
-} from '@/lib/cart/pricing'
+import { calculateLineTotal, getInitialQuantity } from '@/lib/cart/pricing'
 import { productCategories } from '@/lib/data/products'
+import { matchFoodProductsForPet } from '@/lib/recommendations/foodMatcher'
+import { isPetProfileReadyForRecommendations } from '@/lib/recommendations/petProfile'
 import { useCart } from '@/lib/hooks/useCart'
+import { usePets } from '@/lib/hooks/usePets'
+import { useProducts } from '@/lib/hooks/useProducts'
 import { formatPrice } from '@/lib/utils'
+import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { WeightSelector } from '@/components/catalogo/WeightSelector'
+import { ProductPrice } from '@/components/catalogo/ProductPrice'
 
 interface ProductDetailProps {
   product: Product
@@ -30,10 +32,19 @@ const categoryLabels = Object.fromEntries(
 
 export function ProductDetail({ product }: ProductDetailProps) {
   const { addItem } = useCart()
+  const { activePet } = usePets()
+  const { catalogProducts } = useProducts()
   const [quantity, setQuantity] = useState(() => getInitialQuantity(product))
   const [added, setAdded] = useState(false)
 
   const lineTotal = calculateLineTotal(product, quantity)
+
+  const productMatch = useMemo(() => {
+    if (!activePet || !isPetProfileReadyForRecommendations(activePet)) return null
+    return matchFoodProductsForPet(activePet, 20, catalogProducts).find(
+      (m) => m.product.id === product.id
+    )
+  }, [activePet, product.id, catalogProducts])
 
   function handleAddToCart() {
     addItem(product.id, quantity)
@@ -45,49 +56,65 @@ export function ProductDetail({ product }: ProductDetailProps) {
     <div>
       <Link
         href="/catalogo"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-pet-green"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-primary"
       >
         <ArrowLeft className="h-4 w-4" />
         Voltar ao catálogo
       </Link>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <Card className="flex items-center justify-center p-8">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="h-48 w-48 object-contain"
-          />
+        <Card className="aspect-square p-0">
+          <div className="flex h-full items-center justify-center p-8">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="max-h-full max-w-full object-contain"
+            />
+          </div>
         </Card>
 
-        <div className="space-y-6">
+        <div className="space-y-5">
           <div>
-            <div className="mb-2 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-pet-green">
-                {categoryLabels[product.category]}
-              </span>
-              {isWeightProduct(product) && (
-                <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-pet-orange">
-                  A granel
-                </span>
+            <div className="mb-2 flex flex-wrap gap-2">
+              <Badge variant="outline">{categoryLabels[product.category]}</Badge>
+              {isWeightProduct(product) && <Badge variant="secondary">A granel</Badge>}
+              {product.promoPercent && product.promoPercent > 0 && (
+                <Badge variant="secondary">Promoção</Badge>
+              )}
+              {productMatch && (
+                <Badge variant="primary">{productMatch.score}% compatível</Badge>
               )}
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-            <p className="mt-1 text-gray-500">{product.brand}</p>
-            <p className="mt-3 text-2xl font-bold text-pet-orange">
-              {formatProductPriceLabel(product)}
-            </p>
+            <h1 className="font-heading text-2xl font-bold text-ink md:text-3xl">
+              {product.name}
+            </h1>
+            <p className="mt-1 text-muted">{product.brand}</p>
+            <div className="mt-3">
+              <ProductPrice product={product} size="lg" />
+            </div>
+            {product.description && (
+              <p className="mt-3 text-sm leading-relaxed text-muted">{product.description}</p>
+            )}
           </div>
 
+          {productMatch && activePet && (
+            <Card className="bg-secondary/15">
+              <p className="font-heading text-sm font-semibold text-ink">
+                Compatibilidade com {activePet.name}
+              </p>
+              <ul className="mt-2 space-y-1 text-sm text-muted">
+                {productMatch.reasons.map((reason) => (
+                  <li key={reason}>• {reason}</li>
+                ))}
+              </ul>
+            </Card>
+          )}
+
           {isWeightProduct(product) ? (
-            <WeightSelector
-              product={product}
-              grams={quantity}
-              onChange={setQuantity}
-            />
+            <WeightSelector product={product} grams={quantity} onChange={setQuantity} />
           ) : isUnitProduct(product) ? (
             <Card>
-              <p className="mb-3 text-sm font-medium text-gray-700">Quantidade</p>
+              <p className="mb-3 font-heading text-sm font-semibold text-ink">Quantidade</p>
               <div className="flex items-center gap-4">
                 <Button
                   type="button"
@@ -98,7 +125,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 >
                   −
                 </Button>
-                <span className="min-w-[40px] text-center text-lg font-bold">
+                <span className="min-w-[40px] text-center font-heading text-lg font-bold">
                   {quantity}
                 </span>
                 <Button
@@ -110,7 +137,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   +
                 </Button>
               </div>
-              <p className="mt-4 text-lg font-bold text-pet-green">
+              <p className="mt-4 font-heading text-lg font-bold text-primary">
                 Total: {formatPrice(lineTotal)}
               </p>
             </Card>

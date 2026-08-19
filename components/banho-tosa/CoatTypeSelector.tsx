@@ -21,7 +21,7 @@ export function CoatTypeSelector({ selected, onSelect }: CoatTypeSelectorProps) 
             selected={selected === coat}
             className={cn('cursor-pointer text-center', selected === coat && 'bg-green-50')}
           >
-            <p className="font-semibold text-gray-900">{coatTypeLabels[coat]}</p>
+            <p className="font-semibold text-ink">{coatTypeLabels[coat]}</p>
           </Card>
         </button>
       ))}

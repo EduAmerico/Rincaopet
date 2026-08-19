@@ -21,7 +21,6 @@ import { formatPetAgeFromDraft } from '@/lib/petAge'
 import { usePets } from '@/lib/hooks/usePets'
 
 import type { Achievement, Pet, PetRegistrationDraft, PetSex } from '@/lib/types'
-import { bodyConditionLabels } from '@/lib/data/bodyConditions'
 
 import { Button } from '@/components/ui/Button'
 
@@ -35,8 +34,6 @@ import { BreedSelector } from '@/components/banho-tosa/BreedSelector'
 
 import { CoatTypeSelector } from '@/components/banho-tosa/CoatTypeSelector'
 
-import { BodyConditionSelector } from '@/components/banho-tosa/BodyConditionSelector'
-
 import { PetAgeInput } from '@/components/banho-tosa/PetAgeInput'
 
 import { PetHealthForm } from '@/components/banho-tosa/PetHealthForm'
@@ -44,6 +41,10 @@ import { PetHealthForm } from '@/components/banho-tosa/PetHealthForm'
 import { ProfileCompleteActions } from '@/components/banho-tosa/ProfileCompleteActions'
 
 import { AchievementToast } from '@/components/banho-tosa/gamification/AchievementToast'
+
+import { CoinAmount } from '@/components/banho-tosa/gamification/CoinsDisplay'
+
+import { COINS_NEW_PET } from '@/lib/gamification/coins'
 
 
 
@@ -165,7 +166,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
     if (kind === 'Perfil') {
 
-      return draft.weightKg > 0 && draft.sex && draft.bodyCondition
+      return draft.weightKg > 0 && draft.sex
 
     }
 
@@ -255,7 +256,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
   if (isEditMode && (!loaded || !initialized)) {
 
-    return <p className="text-gray-600">Carregando perfil...</p>
+    return <p className="text-muted">Carregando perfil...</p>
 
   }
 
@@ -279,7 +280,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
           <Card>
 
-            <h2 className="text-xl font-bold text-gray-900">Qual é o nome do seu cachorro?</h2>
+            <h2 className="font-heading text-xl font-bold text-ink">Qual é o nome do seu cachorro?</h2>
 
             <Input
 
@@ -303,7 +304,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
           <div>
 
-            <h2 className="mb-4 text-xl font-bold text-gray-900">Escolha a raça</h2>
+            <h2 className="mb-4 font-heading text-xl font-bold text-ink">Escolha a raça</h2>
 
             <BreedSelector
 
@@ -347,11 +348,11 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
           <Card className="space-y-5">
 
-            <h2 className="text-xl font-bold text-gray-900">Perfil do pet</h2>
+            <h2 className="font-heading text-xl font-bold text-ink">Perfil do pet</h2>
 
             <div>
 
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block font-heading text-sm font-medium text-ink">
 
                 Peso (kg): {draft.weightKg}
 
@@ -373,7 +374,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
                 }
 
-                className="w-full accent-pet-green"
+                className="w-full accent-secondary"
 
               />
 
@@ -381,7 +382,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
             <div>
 
-              <p className="mb-2 text-sm font-medium text-gray-700">Sexo</p>
+              <p className="mb-2 font-heading text-sm font-medium text-ink">Sexo</p>
 
               <div className="flex gap-2">
 
@@ -394,6 +395,8 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
                     type="button"
 
                     variant={draft.sex === sex ? 'primary' : 'outline'}
+
+                    selected={draft.sex === sex}
 
                     onClick={() => setDraft((d) => ({ ...d, sex }))}
 
@@ -411,7 +414,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
             <div>
 
-              <p className="mb-2 text-sm font-medium text-gray-700">Castrado?</p>
+              <p className="mb-2 font-heading text-sm font-medium text-ink">Castrado?</p>
 
               <div className="flex gap-2">
 
@@ -420,6 +423,8 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
                   type="button"
 
                   variant={draft.neutered ? 'primary' : 'outline'}
+
+                  selected={draft.neutered}
 
                   onClick={() => setDraft((d) => ({ ...d, neutered: true }))}
 
@@ -435,6 +440,8 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
                   variant={!draft.neutered ? 'secondary' : 'outline'}
 
+                  selected={!draft.neutered}
+
                   onClick={() => setDraft((d) => ({ ...d, neutered: false }))}
 
                 >
@@ -444,20 +451,6 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
                 </Button>
 
               </div>
-
-            </div>
-
-            <div>
-
-              <p className="mb-3 text-sm font-medium text-gray-700">Condição corporal</p>
-
-              <BodyConditionSelector
-
-                selected={draft.bodyCondition}
-
-                onSelect={(bodyCondition) => setDraft((d) => ({ ...d, bodyCondition }))}
-
-              />
 
             </div>
 
@@ -471,7 +464,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
           <Card>
 
-            <h2 className="mb-4 text-xl font-bold text-gray-900">Como é a pelagem?</h2>
+            <h2 className="mb-4 font-heading text-xl font-bold text-ink">Como é a pelagem?</h2>
 
             <CoatTypeSelector
 
@@ -505,7 +498,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
           <Card className="space-y-4">
 
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="font-heading text-xl font-bold text-ink">
 
               {isEditMode ? 'Resumo das alterações' : 'Resumo do cadastro'}
 
@@ -513,29 +506,27 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
             <div className="space-y-2 rounded-xl bg-gray-50 p-4 text-sm">
 
-              <p><strong>Nome:</strong> {draft.name}</p>
+              <p><span className="font-semibold text-secondary">Nome:</span> <span className="text-gray-500">{draft.name}</span></p>
 
-              <p><strong>Raça:</strong> {selectedBreed.name}</p>
+              <p><span className="font-semibold text-secondary">Raça:</span> <span className="text-gray-500">{selectedBreed.name}</span></p>
 
-              <p><strong>Idade:</strong> {formatPetAgeFromDraft(draft.ageYears, draft.ageMonths)}</p>
+              <p><span className="font-semibold text-secondary">Idade:</span> <span className="text-gray-500">{formatPetAgeFromDraft(draft.ageYears, draft.ageMonths)}</span></p>
 
-              <p><strong>Peso:</strong> {draft.weightKg} kg</p>
+              <p><span className="font-semibold text-secondary">Peso:</span> <span className="text-gray-500">{draft.weightKg} kg</span></p>
 
-              <p><strong>Sexo:</strong> {draft.sex === 'male' ? 'Macho' : 'Fêmea'}</p>
+              <p><span className="font-semibold text-secondary">Sexo:</span> <span className="text-gray-500">{draft.sex === 'male' ? 'Macho' : 'Fêmea'}</span></p>
 
-              <p><strong>Castrado:</strong> {draft.neutered ? 'Sim' : 'Não'}</p>
+              <p><span className="font-semibold text-secondary">Castrado:</span> <span className="text-gray-500">{draft.neutered ? 'Sim' : 'Não'}</span></p>
 
-              <p><strong>Condição corporal:</strong> {bodyConditionLabels[draft.bodyCondition]}</p>
-
-              {draft.coatType && <p><strong>Pelagem:</strong> {draft.coatType}</p>}
+              {draft.coatType && <p><span className="font-semibold text-secondary">Pelagem:</span> <span className="text-gray-500">{draft.coatType}</span></p>}
 
               {healthAlerts.length > 0 && (
 
                 <div className="border-t border-gray-200 pt-2">
 
-                  <p className="font-semibold text-amber-800">Alertas de saúde:</p>
+                  <p className="font-semibold text-secondary">Alertas de saúde:</p>
 
-                  <ul className="mt-1 list-disc pl-4 text-amber-900">
+                  <ul className="mt-1 list-disc pl-4 text-gray-500">
 
                     {healthAlerts.map((a) => (
 
@@ -551,7 +542,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
               {draft.health.otherNotes && (
 
-                <p><strong>Observações:</strong> {draft.health.otherNotes}</p>
+                <p><span className="font-semibold text-secondary">Observações:</span> <span className="text-gray-500">{draft.health.otherNotes}</span></p>
 
               )}
 
@@ -559,9 +550,9 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
             {!isEditMode && (
 
-              <p className="rounded-xl bg-green-50 p-4 text-sm font-medium text-pet-green">
+              <p className="rounded-card bg-secondary/15 p-4 text-sm font-medium text-secondary">
 
-                +10 XP por cadastrar um novo pet
+                +<CoinAmount amount={COINS_NEW_PET} /> por cadastrar um novo pet
 
               </p>
 
@@ -619,19 +610,19 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
           <Card className="mx-auto max-w-md text-center">
 
-            <p className="text-sm font-semibold uppercase tracking-wide text-pet-green">
+            <p className="text-sm font-semibold uppercase tracking-wide text-secondary">
 
               Perfil atualizado!
 
             </p>
 
-            <h2 className="mt-2 text-2xl font-bold text-gray-900">
+            <h2 className="mt-2 font-heading text-2xl font-bold text-ink">
 
               {savedPet.name} foi atualizado com sucesso
 
             </h2>
 
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-muted">
 
               Recomendações de produtos e serviços serão recalculadas com base no novo perfil.
 
@@ -641,7 +632,7 @@ export function PetRegistrationWizard({ petId }: PetRegistrationWizardProps) {
 
               <Button className="w-full" onClick={handleCompleteClose}>
 
-                Voltar para Banho e Tosa
+                Voltar para Meu pet
 
               </Button>
 

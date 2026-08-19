@@ -1,7 +1,7 @@
 import type { Product } from '@/lib/types'
 import { getProductFilterPrice } from '@/lib/products/display'
 
-export const products: Product[] = [
+export const seedProducts: Product[] = [
   {
     id: 'p-granel-golden-adulto',
     name: 'Ração Golden Adultos',
@@ -229,7 +229,9 @@ export const products: Product[] = [
   },
 ]
 
-export const productBrands = Array.from(new Set(products.map((p) => p.brand))).sort()
+export const products = seedProducts
+
+export const productBrands = Array.from(new Set(seedProducts.map((p) => p.brand))).sort()
 
 export const productCategories = [
   { value: 'racao' as const, label: 'Ração' },
@@ -238,12 +240,12 @@ export const productCategories = [
   { value: 'acessorio' as const, label: 'Acessório' },
 ]
 
-export const maxProductPrice = Math.max(...products.map(getProductFilterPrice))
+export const maxProductPrice = Math.max(...seedProducts.map(getProductFilterPrice))
 
 export function getProductById(id: string) {
-  return products.find((p) => p.id === id)
+  return seedProducts.find((p) => p.id === id)
 }
 
 export function getFoodProducts() {
-  return products.filter((p) => p.category === 'racao' && !p.isTherapeutic)
+  return seedProducts.filter((p) => p.category === 'racao' && !p.isTherapeutic)
 }

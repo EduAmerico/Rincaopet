@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from '@/lib/utils'
 
 interface StepIndicatorProps {
@@ -7,35 +9,39 @@ interface StepIndicatorProps {
 
 export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
   return (
-    <div className="flex items-center justify-between gap-2">
-      {steps.map((label, index) => {
-        const stepNumber = index + 1
-        const isActive = stepNumber === currentStep
-        const isCompleted = stepNumber < currentStep
-
-        return (
-          <div key={label} className="flex flex-1 flex-col items-center gap-2">
-            <div
-              className={cn(
-                'flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-colors',
-                isCompleted && 'bg-pet-green text-white',
-                isActive && 'bg-pet-orange text-white',
-                !isActive && !isCompleted && 'bg-gray-200 text-gray-500'
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        {steps.map((step, index) => {
+          const stepNumber = index + 1
+          const isActive = stepNumber === currentStep
+          const isDone = stepNumber < currentStep
+          return (
+            <div key={step} className="flex flex-1 items-center gap-2">
+              <div
+                className={cn(
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-heading font-semibold',
+                  isActive && 'bg-secondary text-white hover:bg-secondary-dark active:bg-secondary-light',
+                  isDone && 'bg-secondary text-white',
+                  !isActive && !isDone && 'bg-background text-muted'
+                )}
+              >
+                {isDone ? '✓' : stepNumber}
+              </div>
+              {index < steps.length - 1 && (
+                <div
+                  className={cn(
+                    'hidden h-0.5 flex-1 sm:block',
+                    isDone ? 'bg-secondary' : 'bg-border'
+                  )}
+                />
               )}
-            >
-              {stepNumber}
             </div>
-            <span
-              className={cn(
-                'hidden text-center text-xs font-medium sm:block',
-                isActive ? 'text-pet-orange' : 'text-gray-500'
-              )}
-            >
-              {label}
-            </span>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
+      <p className="font-heading text-sm font-semibold text-ink">
+        {steps[currentStep - 1]}
+      </p>
     </div>
   )
 }

@@ -14,10 +14,10 @@ export function PetAgeInput({ ageYears, ageMonths, onChange }: PetAgeInputProps)
 
   return (
     <div className="space-y-4">
-      <p className="text-sm font-medium text-gray-700">Quantos anos seu pet tem?</p>
+      <p className="text-sm font-medium text-ink">Quantos anos seu pet tem?</p>
 
       <div>
-        <label className="mb-2 block text-sm text-gray-600">Anos</label>
+        <label className="mb-2 block text-sm text-muted">Anos</label>
         <Input
           type="number"
           min={0}
@@ -33,12 +33,12 @@ export function PetAgeInput({ ageYears, ageMonths, onChange }: PetAgeInputProps)
           }}
           placeholder="Ex: 3"
         />
-        <p className="mt-1 text-xs text-gray-500">Digite 0 se tiver menos de 1 ano</p>
+        <p className="mt-1 text-xs text-muted">Digite 0 se tiver menos de 1 ano</p>
       </div>
 
       {isUnderOne && (
         <div>
-          <label className="mb-2 block text-sm text-gray-600">Meses</label>
+          <label className="mb-2 block text-sm text-muted">Meses</label>
           <Input
             type="number"
             min={1}

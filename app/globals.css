@@ -3,18 +3,107 @@
 @tailwind utilities;
 
 :root {
-  --background: #f8faf8;
-  --foreground: #171717;
+  --color-primary: #0b7a4b;
+  --color-secondary: #f59e0b;
+  --color-secondary-dark: #d97706;
+  --color-secondary-light: #fbbf24;
+  --color-ink: #0b7a4b;
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-muted: #3c7a5a;
+  --color-border: #e4e7ec;
+  --color-soft-green: #eaf7f0;
+  --color-soft-gold: #fff5df;
+  --radius-sm: 12px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  color: var(--color-ink);
+  background: var(--color-background);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+button:enabled {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    filter 150ms ease;
+}
+
+button:enabled:hover {
+  filter: brightness(0.9);
+}
+
+button:enabled:active {
+  filter: brightness(1.16);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-manrope), system-ui, sans-serif;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes rincao-splash-logo {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rincao-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes rincao-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-rincao-splash-logo {
+  animation: rincao-splash-logo 0.7s ease-out both;
+}
+
+.animate-rincao-fade-out {
+  animation: rincao-fade-out 0.45s ease-in forwards;
+}
+
+.animate-rincao-modal-in {
+  animation: rincao-modal-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

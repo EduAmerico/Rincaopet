@@ -2,16 +2,16 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Dog, Droplets, ShoppingBag, ShoppingCart, Sparkles } from 'lucide-react'
+import { Dog, PawPrint, ShoppingBag, ShoppingCart } from 'lucide-react'
 import { usePets } from '@/lib/hooks/usePets'
 import { useCart } from '@/lib/hooks/useCart'
-import { calculateTotalTutorXp, calculateTutorLevel } from '@/lib/gamification/xpCalculator'
+import { calculateTotalTutorCoins } from '@/lib/gamification/coins'
+import { CoinAmount } from '@/components/banho-tosa/gamification/CoinsDisplay'
 import { cn } from '@/lib/utils'
-import { XpBar } from '@/components/banho-tosa/gamification/XpBar'
 
 const navItems = [
   { href: '/catalogo', label: 'Catálogo', icon: ShoppingBag },
-  { href: '/banho-tosa', label: 'Banho e Tosa', icon: Droplets },
+  { href: '/banho-tosa', label: 'Meu pet', icon: PawPrint },
 ]
 
 export function MainNav() {
@@ -19,8 +19,7 @@ export function MainNav() {
   const { pets, loaded: petsLoaded } = usePets()
   const { itemCount, loaded: cartLoaded } = useCart()
 
-  const tutorXp = petsLoaded ? calculateTotalTutorXp(pets) : 0
-  const tutorLevel = petsLoaded ? calculateTutorLevel(pets) : 1
+  const tutorCoins = petsLoaded ? calculateTotalTutorCoins(pets) : 0
 
   return (
     <header className="sticky top-0 z-50 border-b border-green-100 bg-white/95 backdrop-blur">
@@ -30,8 +29,8 @@ export function MainNav() {
             <Dog className="h-6 w-6" />
           </div>
           <div>
-            <p className="text-lg font-bold text-gray-900">Agropet Goldpet</p>
-            <p className="text-xs text-gray-500">Catálogo & Banho e Tosa</p>
+            <p className="text-lg font-bold text-ink">Agropet Goldpet</p>
+            <p className="text-xs text-muted">Catálogo & Meu pet</p>
           </div>
         </Link>
 
@@ -46,7 +45,7 @@ export function MainNav() {
                   'flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors',
                   isActive
                     ? 'bg-pet-green text-white'
-                    : 'text-gray-600 hover:bg-green-50 hover:text-pet-green'
+                    : 'text-muted hover:bg-green-50 hover:text-pet-green'
                 )}
               >
                 <item.icon className="h-4 w-4" />
@@ -59,14 +58,9 @@ export function MainNav() {
         <div className="flex items-center gap-3">
           {petsLoaded && pets.length > 0 && (
             <div className="hidden w-40 lg:block">
-              <div className="mb-1 flex items-center justify-between text-xs font-medium text-gray-600">
-                <span className="flex items-center gap-1">
-                  <Sparkles className="h-3 w-3 text-pet-orange" />
-                  Tutor Nv. {tutorLevel}
-                </span>
-                <span>{tutorXp} XP</span>
+              <div className="text-xs font-semibold text-secondary">
+                <CoinAmount amount={tutorCoins} />
               </div>
-              <XpBar xp={tutorXp} compact />
             </div>
           )}
 
@@ -76,7 +70,7 @@ export function MainNav() {
               'relative flex h-10 w-10 items-center justify-center rounded-xl border transition-colors',
               pathname.startsWith('/carrinho')
                 ? 'border-pet-green bg-green-50 text-pet-green'
-                : 'border-gray-200 text-gray-600 hover:border-pet-green hover:text-pet-green'
+                : 'border-gray-200 text-muted hover:border-pet-green hover:text-pet-green'
             )}
           >
             <ShoppingCart className="h-5 w-5" />
@@ -98,7 +92,7 @@ export function MainNav() {
               href={item.href}
               className={cn(
                 'flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-semibold',
-                isActive ? 'bg-pet-green text-white' : 'text-gray-600'
+                isActive ? 'bg-pet-green text-white' : 'text-muted'
               )}
             >
               <item.icon className="h-4 w-4" />

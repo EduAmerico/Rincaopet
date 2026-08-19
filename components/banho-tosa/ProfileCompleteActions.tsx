@@ -11,13 +11,16 @@ interface ProfileCompleteActionsProps {
 }
 
 export function ProfileCompleteActions({ pet, onClose }: ProfileCompleteActionsProps) {
+  const isFemale = pet.sex === 'female'
+
   return (
     <Card className="mx-auto max-w-md text-center">
       <p className="text-sm font-semibold uppercase tracking-wide text-pet-green">
-        Perfil do {pet.name} completo 🎉
+        Perfil d{isFemale ? 'a' : 'o'} {pet.name} completo 🎉
       </p>
-      <p className="mt-2 text-gray-600">
-        Agora podemos personalizar produtos e serviços para o perfil dele.
+      <p className="mt-2 text-muted">
+        Agora podemos personalizar produtos e serviços para o perfil{' '}
+        {isFemale ? 'dela' : 'dele'}.
       </p>
       <div className="mt-6 flex flex-col gap-3">
         <Link href={`/catalogo?petId=${pet.id}`} onClick={onClose}>

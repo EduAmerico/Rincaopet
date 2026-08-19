@@ -1,4 +1,4 @@
-import { getProductById } from '@/lib/data/products'
+import { getManagedProductById } from '@/lib/catalog/productRepository'
 import { shopConfig } from '@/lib/config'
 import type { CartItem } from '@/lib/types'
 import { formatCartItemQuantity } from '@/lib/products/display'
@@ -7,7 +7,7 @@ import { calculateLineTotal } from '@/lib/cart/pricing'
 
 export function buildWhatsAppOrderMessage(items: CartItem[]): string {
   const lines = items.map((item) => {
-    const product = getProductById(item.productId)
+    const product = getManagedProductById(item.productId)
     if (!product) return null
     const lineTotal = calculateLineTotal(product, item.quantity)
     const qtyLabel = formatCartItemQuantity(product, item.quantity)
@@ -15,7 +15,7 @@ export function buildWhatsAppOrderMessage(items: CartItem[]): string {
   }).filter(Boolean)
 
   const total = items.reduce((sum, item) => {
-    const product = getProductById(item.productId)
+    const product = getManagedProductById(item.productId)
     if (!product) return sum
     return sum + calculateLineTotal(product, item.quantity)
   }, 0)

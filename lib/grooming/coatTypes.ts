@@ -16,7 +16,6 @@ const srdCoatProfiles: Record<CoatType, BreedGroomingProfile> = {
     breedId: 'b1',
     coatType: 'Pelagem curta (SRD)',
     options: cloneOptions([
-      g.bathOnly,
       g.skinCare,
       g.sanitary,
       g.nails,
@@ -27,7 +26,6 @@ const srdCoatProfiles: Record<CoatType, BreedGroomingProfile> = {
     breedId: 'b1',
     coatType: 'Pelagem média (SRD)',
     options: cloneOptions([
-      g.bathOnly,
       g.bathBrush,
       g.sanitary,
       g.pawTrim,
@@ -75,7 +73,6 @@ const srdCoatProfiles: Record<CoatType, BreedGroomingProfile> = {
     breedId: 'b1',
     coatType: 'Pelagem dura/áspera (SRD)',
     options: cloneOptions([
-      g.bathOnly,
       g.sanitary,
       g.beardTrim,
       g.pawTrim,
